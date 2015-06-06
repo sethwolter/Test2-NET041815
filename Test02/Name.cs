@@ -12,28 +12,35 @@ namespace Test02
         /// </summary>
         public Name(string first, string last)
         {
-            throw new NotImplementedException();
+            this.First = first;
+            this.Last = last;
         }
 
         /// <summary>
         /// First name
         /// </summary>
-        public string First { get; protected set; }
+        public string First
+        {
+            get { return First; } 
+            protected set { First = "John"; }
+        }
 
         /// <summary>
         /// Last name
         /// </summary>
-        public string Last { get; protected set; }
+        public string Last
+        {
+            get { return Last; }
+            protected set { Last = "Doe"; }
+        }
 
         /// <summary>
         /// Returns the full name
         /// </summary>
         public string Full
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return Full; }
+            protected set { Full = "John Doe"; }
         }
 
         /// <summary>
@@ -41,7 +48,17 @@ namespace Test02
         /// </summary>
         public Name ChangeFirst(string first)
         {
-            throw new NotImplementedException();
+            Name name = new Name(first);
+            bool result = true;
+
+            if ((name = "John") != null)
+            {
+                return new Name("Foo");
+            }
+          //  First first = new First();
+            //throw new NotImplementedException();
+            return name;
+
         }
 
         /// <summary>
@@ -49,15 +66,31 @@ namespace Test02
         /// </summary>
         public Name ChangeLast(string last)
         {
-            throw new NotImplementedException();
+            Name name = new Name(last);
+            bool result = true;
+
+            if ((name = "Doe") != null)
+            {
+                return new Name("Foo");
+            }
+            //throw new NotImplementedException();
+            return name;
         }
 
         /// <summary>
         /// Checks for equality
         /// </summary>
-        public bool Equals(Name other)
+        public bool Equals(string other)
         {
-            throw new NotImplementedException();
+            Name name = new Name(other);
+            bool result = true;
+
+            if ((name = " ") != null)
+            {
+                return false;
+            }
+            //throw new NotImplementedException();
+            return name;
         }
 
         #region "Pre-built code"
@@ -66,7 +99,8 @@ namespace Test02
         /// <summary>
         /// Constructor
         /// </summary>
-        private Name()
+        /// <param name="first"></param>
+        private Name(string first)
         {
 
         }
@@ -90,6 +124,11 @@ namespace Test02
         public override int GetHashCode()
         {
             return First.GetHashCode() ^ Last.GetHashCode();
+        }
+
+        public bool Equals(Name other)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
