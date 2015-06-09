@@ -1,4 +1,5 @@
 ﻿using System;
+using Xunit.Sdk;
 
 namespace Test02
 {
@@ -7,40 +8,68 @@ namespace Test02
     /// </summary>
     public class Name : IEquatable<Name>
     {
+
         /// <summary>
         /// Constructor
         /// </summary>
         public Name(string first, string last)
         {
-            this.First = first;
-            this.Last = last;
+            if (string.IsNullOrEmpty(first))
+            {
+                throw new ArgumentException(); //throw stop sexecution so 'else' is not necessary
+            }
+
+            this.First = first; //this. reduces ambiguity
+            this.Last = last; //C# looks for closest scope to method argument
+
         }
 
         /// <summary>
         /// First name
         /// </summary>
-        public string First
-        {
-            get { return First; } 
-            protected set { First = "John"; }
-        }
+        public string First {get; protected set; }
+        //{
+        //    get { return First; }
+        //    protected set { First = "John"; }
+        //}
 
         /// <summary>
         /// Last name
         /// </summary>
-        public string Last
-        {
-            get { return Last; }
-            protected set { Last = "Doe"; }
-        }
+        public string Last { get; protected set; }
+        
+
+            
+            //get { return Last; }
+            //protected set { Last = "Doe"; }
+        
 
         /// <summary>
         /// Returns the full name
         /// </summary>
         public string Full
         {
-            get { return Full; }
-            protected set { Full = "John Doe"; }
+
+            get
+            {
+                if (!string.IsNullOrEmpty(First) && 
+                    !string.IsNullOrEmpty(Last))
+                {
+                    return First + " " + Last;
+                }
+
+                if ( string.IsNullOrEmpty(First))
+                {
+                    return Last; //if this is successful.. don't need the else below
+                }
+                else if (string.IsNullOrEmpty(Last))
+                {
+                    return First;
+                }
+                return string.Empty;
+            }
+            //get { return Full; }
+            //protected set { Full = "John Doe"; }
         }
 
         /// <summary>
@@ -48,16 +77,22 @@ namespace Test02
         /// </summary>
         public Name ChangeFirst(string first)
         {
-            Name name = new Name(first);
-            bool result = true;
-
-            if ((name = "John") != null)
+            if (string.IsNullOrEmpty(first))
             {
-                return new Name("Foo");
+                throw new ArgumentException();
             }
-          //  First first = new First();
-            //throw new NotImplementedException();
-            return name;
+            return new Name { First = first, Last = Last }; //andrews revisions
+
+            //Name name = new Name(first); //my version
+            //bool result = true;
+
+            //if ((name = "John") != null)
+            //{
+            //    return new Name("Foo");
+            //}
+            ////  First first = new First();
+            ////throw new NotImplementedException();
+            //return name;
 
         }
 
@@ -66,31 +101,47 @@ namespace Test02
         /// </summary>
         public Name ChangeLast(string last)
         {
-            Name name = new Name(last);
-            bool result = true;
-
-            if ((name = "Doe") != null)
+            if (string.IsNullOrEmpty(last))
             {
-                return new Name("Foo");
+                throw new ArgumentException();
             }
-            //throw new NotImplementedException();
-            return name;
+            return new Name { First = First, Last = last }; //andrews revisions
+
+            //Name temp = new Name(); //inclass suggestion first
+            //temp.First = First;
+            //temp.Last = last;
+            //return temp;
+
+            //Name name = new Name(last); //my version
+            //bool result = true;
+
+            //if ((name = "Doe") != null)
+            //{
+            //    return new Name("Foo");
+            //}
+            ////throw new NotImplementedException();
+            //return name;
         }
 
         /// <summary>
         /// Checks for equality
         /// </summary>
-        public bool Equals(string other)
+        public bool Equals(Name other)
         {
-            Name name = new Name(other);
-            bool result = true;
 
-            if ((name = " ") != null)
+            //Name name = new Name(other);
+            //bool result = true;
+
+            if (First == other.First && Last == other.Last) //in class solution
             {
-                return false;
+                return true;
             }
+
+            return false;
+
+            //return First == other.First && Last == other.Last;  //Andrews version
             //throw new NotImplementedException();
-            return name;
+            //return name;
         }
 
         #region "Pre-built code"
@@ -100,7 +151,7 @@ namespace Test02
         /// Constructor
         /// </summary>
         /// <param name="first"></param>
-        private Name(string first)
+        private Name()
         {
 
         }
